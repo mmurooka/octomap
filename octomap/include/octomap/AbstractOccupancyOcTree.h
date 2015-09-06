@@ -190,6 +190,7 @@ namespace octomap {
     void setProbHit(double prob){prob_hit_log = logodds(prob); assert(prob_hit_log >= 0.0);}
     /// sets the probability for a "miss" (will be converted to logodds) - sensor model
     void setProbMiss(double prob){prob_miss_log = logodds(prob); assert(prob_miss_log <= 0.0);}
+    void setProbMissContactSensor(double prob){prob_miss_contact_sensor_log = logodds(prob); assert(prob_miss_contact_sensor_log <= 0.0);}
     /// sets the minimum threshold for occupancy clamping (sensor model)
     void setClampingThresMin(double thresProb){clamping_thres_min = logodds(thresProb); }
     /// sets the maximum threshold for occupancy clamping (sensor model)
@@ -206,8 +207,10 @@ namespace octomap {
     float getProbHitLog() const {return prob_hit_log; }
     /// @return probability for a "miss"  in the sensor model (probability)
     double getProbMiss() const {return probability(prob_miss_log); }
+    double getProbMissContactSensor() const {return probability(prob_miss_contact_sensor_log); }
     /// @return probability for a "miss"  in the sensor model (logodds)
     float getProbMissLog() const {return prob_miss_log; }
+    float getProbMissContactSensorLog() const {return prob_miss_contact_sensor_log; }
 
     /// @return minimum threshold for occupancy clamping in the sensor model (probability)
     double getClampingThresMin() const {return probability(clamping_thres_min); }
@@ -230,6 +233,7 @@ namespace octomap {
     float clamping_thres_max;
     float prob_hit_log;
     float prob_miss_log;
+    float prob_miss_contact_sensor_log;
     float occ_prob_thres_log;
 
     static const std::string binaryFileHeader;

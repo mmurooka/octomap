@@ -42,6 +42,7 @@ namespace octomap {
     setOccupancyThres(0.5);   // = 0.0 in logodds
     setProbHit(0.7);          // = 0.85 in logodds
     setProbMiss(0.4);         // = -0.4 in logodds
+    setProbMissContactSensor(0.1);
 
     setClampingThresMin(0.1192); // = -2 in log odds
     setClampingThresMax(0.971); // = 3.5 in log odds
