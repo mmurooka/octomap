@@ -120,6 +120,26 @@ namespace octomap {
       return (occupancyNode.getLogOdds() >= this->occ_prob_thres_log);
     }
 
+    /// queries whether a node is occupied according to the tree's parameter for "occupancy"
+    inline bool isNodeFree(const OcTreeNode* occupancyNode) const{
+      return (occupancyNode->getLogOdds() <= this->free_prob_thres_log);
+    }
+
+    /// queries whether a node is occupied according to the tree's parameter for "occupancy"
+    inline bool isNodeFree(const OcTreeNode& occupancyNode) const{
+      return (occupancyNode.getLogOdds() <= this->free_prob_thres_log);
+    }
+
+    /// queries whether a node is occupied according to the tree's parameter for "occupancy"
+    inline bool isNodeUnknown(const OcTreeNode* occupancyNode) const{
+      return (!isNodeOccupied(occupancyNode) and !isNodeFree(occupancyNode));
+    }
+
+    /// queries whether a node is occupied according to the tree's parameter for "occupancy"
+    inline bool isNodeUnknown(const OcTreeNode& occupancyNode) const{
+      return (!isNodeOccupied(occupancyNode) and !isNodeFree(occupancyNode));
+    }
+
     /// queries whether a node is at the clamping threshold according to the tree's parameter
     inline bool isNodeAtThreshold(const OcTreeNode* occupancyNode) const{
       return (occupancyNode->getLogOdds() >= this->clamping_thres_max
@@ -186,8 +206,11 @@ namespace octomap {
 
     /// sets the threshold for occupancy (sensor model)
     void setOccupancyThres(double prob){occ_prob_thres_log = logodds(prob); }
+    /// sets the threshold for free (sensor model)
+    void setFreeThres(double prob){free_prob_thres_log = logodds(prob); }
     /// sets the probability for a "hit" (will be converted to logodds) - sensor model
     void setProbHit(double prob){prob_hit_log = logodds(prob); assert(prob_hit_log >= 0.0);}
+    void setProbHitContactSensor(double prob){prob_hit_contact_sensor_log = logodds(prob); assert(prob_hit_contact_sensor_log <= 0.0);}
     /// sets the probability for a "miss" (will be converted to logodds) - sensor model
     void setProbMiss(double prob){prob_miss_log = logodds(prob); assert(prob_miss_log <= 0.0);}
     void setProbMissContactSensor(double prob){prob_miss_contact_sensor_log = logodds(prob); assert(prob_miss_contact_sensor_log <= 0.0);}
@@ -200,11 +223,17 @@ namespace octomap {
     double getOccupancyThres() const {return probability(occ_prob_thres_log); }
     /// @return threshold (logodds) for occupancy - sensor model
     float getOccupancyThresLog() const {return occ_prob_thres_log; }
+    /// @return threshold (probability) for occupancy - sensor model
+    double getFreeThres() const {return probability(free_prob_thres_log); }
+    /// @return threshold (logodds) for occupancy - sensor model
+    float getFreeThresLog() const {return free_prob_thres_log; }
 
     /// @return probability for a "hit" in the sensor model (probability)
     double getProbHit() const {return probability(prob_hit_log); }
+    double getProbHitContactSensor() const {return probability(prob_hit_contact_sensor_log); }
     /// @return probability for a "hit" in the sensor model (logodds)
     float getProbHitLog() const {return prob_hit_log; }
+    float getProbHitContactSensorLog() const {return prob_hit_contact_sensor_log; }
     /// @return probability for a "miss"  in the sensor model (probability)
     double getProbMiss() const {return probability(prob_miss_log); }
     double getProbMissContactSensor() const {return probability(prob_miss_contact_sensor_log); }
@@ -232,9 +261,11 @@ namespace octomap {
     float clamping_thres_min;
     float clamping_thres_max;
     float prob_hit_log;
+    float prob_hit_contact_sensor_log;
     float prob_miss_log;
     float prob_miss_contact_sensor_log;
     float occ_prob_thres_log;
+    float free_prob_thres_log;
 
     static const std::string binaryFileHeader;
   };

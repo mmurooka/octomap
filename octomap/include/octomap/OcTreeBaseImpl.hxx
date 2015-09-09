@@ -876,7 +876,8 @@ namespace octomap {
           //          std::cout << "querying p=" << p << std::endl;
           p.z() += this->resolution;
           res = this->search(p);
-          if (res == NULL) {
+          // if (res == NULL) {
+          if (res == NULL || (res && this->isNodeUnknown(res))) {
             node_centers.push_back(p);
           }
         }
