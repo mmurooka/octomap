@@ -878,7 +878,11 @@ namespace octomap {
           res = this->search(p);
           // if (res == NULL) {
           if (res == NULL || (res && this->isNodeUnknown(res))) {
-            node_centers.push_back(p);
+            point3d cp = p;
+            for (int i=0;i<3;++i) {
+              cp(i) -= this->resolution / 2.0;
+            }
+            node_centers.push_back(cp);
           }
         }
         p.z() = pmin.z();
