@@ -43,7 +43,7 @@ namespace octomap {
     setFreeThres(0.3);   // = 0.0 in logodds
     // setOccupancyThres(0.5);   // = 0.0 in logodds
     setProbHit(0.7);          // = 0.85 in logodds
-    setProbMiss(0.4);         // = -0.4 in logodds
+    setProbMiss(0.2);         // = -0.4 in logodds
     setProbHitContactSensor(0.7);
     setProbMissContactSensor(0.1);
 
